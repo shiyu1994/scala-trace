@@ -63,6 +63,7 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
             thisStack.push(noPosition);
             staticStack.push(true);
         }
+
         ICodeLogTreeNode noPosition = new ICodeLogTreeNode("NoPosition");
         private HashMap<String, ICodeLogTreeNode> nameLastWrittenBy = new HashMap();
         private HashMap<String, ICodeLogTreeNode> lineMapToNode = new HashMap();
@@ -72,7 +73,6 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
         private Integer inPrimitive = 0;
         boolean tryConstructModule = false;
         boolean readingArgs = false;
-        boolean staticMethod = true;
         ICodeLogTreeNode thisWrittenBy = null;
         Integer methodCounter = 0;
         ICodeLogTreeNode thisLineNode, dependOnLine;
@@ -108,14 +108,6 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
                     methodCounter -= 1;
                 }
                 tryConstructModule = false;
-            }
-
-            if((opArgs[0].equals("#1") || opArgs[0].equals("#2")) && inPrimitive == 0 && !opArgs[opArgs.length - 1].equals("@") && readingArgs) {
-                /*readingArgs = false;
-                nameLastWrittenBy.put("@this", thisWrittenBy);
-                traceStack.pop();
-                dependOnLine = nodeStack.pop();
-                thisWrittenBy.addDependency(dependOnLine);*/
             }
 
             switch (opArgs[0])  {

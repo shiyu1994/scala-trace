@@ -28,6 +28,9 @@ class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNod
 
     @Override public void addDependency(LogTreeNode dependency) {
         dependOn.add(dependency);
+        if(!dependency.useful && !line.equals("NoPosition") && line.contains("line") &&
+               useful && !dependency.line.equals("NoPosition") && dependency.line.contains("line"))
+            dependency.setUseful();
     }
 
     @Override public void setUseful() {
@@ -35,13 +38,15 @@ class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNod
             useful = true;
             LogTree.increaseUseful();
             Iterator<LogTreeNode> itor = dependOn.iterator();
+            LogTree.write(line);
             while (itor.hasNext()) {
-                itor.next().setUseful();
+                LogTreeNode next = itor.next();
+                if(!next.useful && !next.line.equals("NoPosition") && next.line.contains("line"))
+                    next.setUseful();
             }
-            if(methodObject != null) {
+            if(methodObject != null && !methodObject.useful && !methodObject.line.equals("NoPosition") && methodObject.line.contains("line")) {
                 methodObject.setUseful();
             }
-            LogTree.write(line);
         }
     }
 

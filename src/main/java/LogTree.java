@@ -87,8 +87,9 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
                 ICodeLogTreeNode newNode = new ICodeLogTreeNode(line);
                 lineMapToNode.put(line, newNode);
                 thisLineNode = newNode;
-                if(!staticStack.peek())
+                if(!staticStack.peek()) {
                     thisLineNode.methodObject = thisWrittenBy;
+                }
             } else {
                 thisLineNode = lineMapToNode.get(line);
             }

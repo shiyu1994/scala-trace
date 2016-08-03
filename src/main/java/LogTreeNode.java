@@ -3,9 +3,7 @@
  * @author Yu Shi
  */
 
-import java.util.Set;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 abstract class LogTreeNode {
     protected String line;
@@ -16,11 +14,10 @@ abstract class LogTreeNode {
     abstract public void addDependency(LogTreeNode dependency);
     abstract public void setUseful();
     protected boolean useful = false;
+    public ICodeLogTreeNode methodObject = null;
 }
 
 class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNode> {
-
-    public ICodeLogTreeNode methodObject = null;
 
     ICodeLogTreeNode(String line) {
         super(line);
@@ -35,7 +32,32 @@ class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNod
 
     @Override public void setUseful() {
         if(!useful && !line.equals("NoPosition") && line.contains("line")) {
-            useful = true;
+
+            Queue<LogTreeNode> queue = new LinkedList<>();
+            queue.add(this);
+
+            while(!queue.isEmpty()) {
+                LogTreeNode next = queue.remove();
+                if(!next.useful && !next.line.equals("NoPosition") && next.line.contains("line")) {
+                    next.useful = true;
+                    LogTree.increaseUseful();
+                    LogTree.write(next.line);
+
+                    if(next.methodObject != null && !next.methodObject.useful && !next.methodObject.line.equals("NoPosition") && next.methodObject.line.contains("line")) {
+                        queue.add(next.methodObject);
+                    }
+
+                    Iterator<LogTreeNode> itor = next.dependOn.iterator();
+                    while(itor.hasNext()) {
+                        LogTreeNode nextNode = itor.next();
+                        if(!nextNode.useful && !nextNode.line.equals("NoPosition") && nextNode.line.contains("line")) {
+                            queue.add(nextNode);
+                        }
+                    }
+                }
+            }
+
+            /*useful = true;
             LogTree.increaseUseful();
             Iterator<LogTreeNode> itor = dependOn.iterator();
             LogTree.write(line);
@@ -46,7 +68,7 @@ class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNod
             }
             if(methodObject != null && !methodObject.useful && !methodObject.line.equals("NoPosition") && methodObject.line.contains("line")) {
                 methodObject.setUseful();
-            }
+            }*/
         }
     }
 

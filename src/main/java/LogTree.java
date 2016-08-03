@@ -61,6 +61,7 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
             super(products);
             lineMapToNode.put("NoPosition", noPosition);
             thisStack.push(noPosition);
+            thisWrittenBy = noPosition;
             staticStack.push(true);
         }
 
@@ -119,7 +120,10 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
                             readingArgs = true;
                             thisWrittenBy = thisLineNode;
                         } else {
-                            nameLastWrittenBy.put(opArgs[1], thisLineNode);
+                            if(opArgs[1].equals("@this"))
+                                thisWrittenBy = thisLineNode;
+                            else
+                                nameLastWrittenBy.put(opArgs[1], thisLineNode);
                             traceStack.pop();
                             dependOnLine = nodeStack.pop();
                             thisLineNode.addDependency(dependOnLine);
@@ -140,7 +144,9 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
                         methodCounter += 1;
                         traceStack.push(opArgs[1]);
                         nodeStack.push(thisLineNode);
-                        if (nameLastWrittenBy.containsKey(opArgs[1]))
+                        if(opArgs[1].equals("@this"))
+                            thisLineNode.addDependency(thisWrittenBy);
+                        else if (nameLastWrittenBy.containsKey(opArgs[1]))
                             thisLineNode.addDependency(nameLastWrittenBy.get(opArgs[1]));
                     }
                     break;
@@ -148,27 +154,30 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
                 case "#3":
                     if(inPrimitive == 0) {
                         for (int i = 1; i < opArgs.length - 1; ++i) {
-                            if (nameLastWrittenBy.containsKey(opArgs[i]))
+                            if(opArgs[i].equals("@this"))
+                                thisLineNode.addDependency(thisWrittenBy);
+                            else if (nameLastWrittenBy.containsKey(opArgs[i]))
                                 thisLineNode.addDependency(nameLastWrittenBy.get(opArgs[i]));
                         }
 
-                        nameLastWrittenBy.put(opArgs[opArgs.length - 1], thisLineNode);
+                        if(opArgs[opArgs.length - 1].equals("@this"))
+                            thisWrittenBy = thisLineNode;
+                        else
+                            nameLastWrittenBy.put(opArgs[opArgs.length - 1], thisLineNode);
                     }
                     break;
 
                 case "##00":
                     if(inPrimitive == 0) {
                         if(!readingArgs) {
-                            //staticMethod = true;
                             staticStack.push(true);
                         }
                         else {
                             readingArgs = false;
-                            nameLastWrittenBy.put("@this", thisWrittenBy);
+                            //nameLastWrittenBy.put("@this", thisWrittenBy);
                             traceStack.pop();
                             dependOnLine = nodeStack.pop();
                             thisWrittenBy.addDependency(dependOnLine);
-                            //staticMethod = false;
                             thisStack.push(thisWrittenBy);
                             staticStack.push(false);
                         }
@@ -184,7 +193,7 @@ class ICodeLogTree extends LogTree<ICodeLogTreeNode> {
                             thisStack.pop();
                             staticStack.pop();
                             thisWrittenBy = thisStack.peek();
-                            nameLastWrittenBy.put("@this", thisWrittenBy);
+                            //nameLastWrittenBy.put("@this", thisWrittenBy);
                         }
                     }
                     break;

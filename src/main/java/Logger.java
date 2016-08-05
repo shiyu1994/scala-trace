@@ -18,6 +18,13 @@ public class Logger {
         /*if(line.contains(","))
             logTree.log(line.substring(0, line.lastIndexOf(",")), op);
         else*/
+        try {
             logTree.log(line, op);
+        } catch (Exception e) {
+            while(!logTree.debug.isEmpty()) {
+                System.out.println(logTree.debug.remove());
+            }
+            e.printStackTrace();
+        }
     }
 }

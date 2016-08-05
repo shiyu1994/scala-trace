@@ -10,14 +10,14 @@ abstract class LogTreeNode {
     LogTreeNode(String line) {
         this.line = line;
     }
-    protected Set<LogTreeNode> dependOn = new TreeSet();
+    protected Set<LogTreeNode> dependOn = new HashSet();
     abstract public void addDependency(LogTreeNode dependency);
     abstract public void setUseful();
     protected boolean useful = false;
     public ICodeLogTreeNode methodObject = null;
 }
 
-class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNode> {
+class ICodeLogTreeNode extends LogTreeNode {
 
     ICodeLogTreeNode(String line) {
         super(line);
@@ -72,7 +72,7 @@ class ICodeLogTreeNode extends LogTreeNode implements Comparable<ICodeLogTreeNod
         }
     }
 
-    @Override public int compareTo(ICodeLogTreeNode other) {
+    /*@Override public int compareTo(ICodeLogTreeNode other) {
         return line.compareTo(other.line);
-    }
+    }*/
 }

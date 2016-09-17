@@ -95,7 +95,7 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           val returnObj = makePrintCall("b_" + tree.symbol.name + "_" + tree.id, getValsAndParents(impl.body, tree.symbol) + " $$$ " + tree.name, tree.pos)
           val newTree = treeCopy.ClassDef(tree, mods, name, tparams,
             treeCopy.Template(impl, impl.parents, impl.self,
-              insertIntoConstructor(impl.body, passConstructorArgs, returnObj).map { wrapUp(_, false) }  ))
+              insertIntoConstructor(impl.body.map { wrapUp(_, false) }, passConstructorArgs, returnObj)  ))
           exit()
           newTree
 
@@ -159,6 +159,16 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           if(args.length > 0)
             (args map { _ name } reduce { _ + " " + _ }) + " " + {if(selectList.isEmpty) "" else selectList reduce {_ + " " + _}}
           else if(selectList.isEmpty) "" else selectList reduce {_ + " " + _}
+
+
+          def wrapUpFun(fun: Tree): Tree = {
+            fun match {
+              case Select(qualifier, selector) => treeCopy.Select(fun, wrapUp(qualifier, true, ("say something", fun.pos)::Nil), selector)
+              case TypeApply(_fun, args) => treeCopy.TypeApply(fun, wrapUpFun(_fun), args)
+              case Apply(fun, args) => wrapUp(fun, true, ("say something", fun.pos)::Nil)
+              case _ => fun
+            }
+          }
 
           if(args.length >= 1)
             wrapWithPrint(treeCopy.Apply(tree, fun,

@@ -1,17 +1,1 @@
-[0m[[0minfo[0m] [0mPackaging /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/scala-trace-runtime_2.11-1.0.0.jar ...[0m
-[0m[[0mdebug[0m] [0mInput file mappings:[0m
-[0m[[0mdebug[0m] [0m	scalatrace/ICodeLogTreeNode.class[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace/ICodeLogTreeNode.class[0m
-[0m[[0mdebug[0m] [0m	scalatrace[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace[0m
-[0m[[0mdebug[0m] [0m	scalatrace/ScalaTrace.class[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace/ScalaTrace.class[0m
-[0m[[0mdebug[0m] [0m	scalatrace/Logger.class[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace/Logger.class[0m
-[0m[[0mdebug[0m] [0m	scalatrace/LogTreeNode.class[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace/LogTreeNode.class[0m
-[0m[[0mdebug[0m] [0m	scalatrace/LogTree.class[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace/LogTree.class[0m
-[0m[[0mdebug[0m] [0m	scalatrace/ICodeLogTree.class[0m
-[0m[[0mdebug[0m] [0m	  /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/classes/scalatrace/ICodeLogTree.class[0m
-[0m[[0minfo[0m] [0mDone packaging.[0m
+[0m[[0mdebug[0m] [0mJar uptodate: /Users/shiyu/Projects/Scala/scala-trace/scala-trace-runtime/target/scala-2.11/scala-trace-runtime_2.11-1.0.0.jar[0m

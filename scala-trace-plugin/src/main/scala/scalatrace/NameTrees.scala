@@ -12,7 +12,8 @@ trait NameTrees {
 
   protected abstract class NameTree {
     val name: String
-    val allNames: List[String]
+    val upName: String
+    val downName: String
   }
 
   object ReadWriteTree {
@@ -209,7 +210,8 @@ trait NameTrees {
     implicit def treeToReadWriteTree(tree: Tree): NameTree = {
       new NameTree {
         val name = getName(tree)
-        val allNames = getAllNames(tree)
+        val upName = name + "^"
+        val downName = name + "!"
       }
     }
   }

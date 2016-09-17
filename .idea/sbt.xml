@@ -9,6 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/project" />
+            <option value="$PROJECT_DIR$/scala-trace-plugin" />
+            <option value="$PROJECT_DIR$/scala-trace-plugin/project" />
+            <option value="$PROJECT_DIR$/scala-trace-runtime" />
+            <option value="$PROJECT_DIR$/scala-trace-runtime/project" />
           </set>
         </option>
         <option name="sbtVersion" value="0.13.8" />

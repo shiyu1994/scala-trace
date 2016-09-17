@@ -17,22 +17,29 @@ trait FunContexts {
     var localTyper: analyzer.Typer
     var contexts: List[(Tree, Symbol)] = Nil
 
-    @inline protected def makePrintTrees(msg: List[(String, Position)]): List[Tree] =
-    {
+    @inline protected def makePrintTrees(msg: List[(String, Position)]): List[Tree] = {
       msg map { msg =>
         val (dataFlow, pos) = msg
         val newTree = Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("log")),
           Literal(Constant(dataFlow)):: Literal(Constant(pos.focus.toString)) :: Nil)
-        localTyper.typed(newTree)
+        localTyper.atOwner(contexts.head._2).typed(newTree)
       }
     }
 
-    @inline protected def makePrintTree(msg: String, pos: Position): Tree =
-    {
-
+    @inline protected def makePrintTree(msg: String, pos: Position): Tree = {
         val newTree = Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("log")),
           Literal(Constant(msg)):: Literal(Constant(pos.focus.toString)) :: Nil)
         localTyper.typed(newTree)
+    }
+
+    @inline protected def makePrintWrapTree(tree: Tree, msg: List[(String, Position)]): Tree = {
+      val logTrees: List[Tree] = msg map { a =>
+        val (msg, pos) = a
+        Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("log")),
+        Literal(Constant(msg)):: Literal(Constant(pos.focus.toString)) :: Nil) }
+      val newTree = Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("__wrapperAfter")),
+         tree :: logTrees ::: Nil)
+      localTyper.typed(newTree)
     }
 
     @inline protected def makePrintCall(name: String, msg: String, pos: Position): Tree = {

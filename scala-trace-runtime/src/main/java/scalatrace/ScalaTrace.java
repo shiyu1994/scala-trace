@@ -5,6 +5,8 @@ package scalatrace;
  */
 public final class ScalaTrace {
   static public <R> R  __wrapperAfter(R x, boolean ... printAfter) { return x; }
+  static public <R> R  __wrapperBefore(boolean printBefore, R x) { return x; }
+
   static public boolean log(String dataFlow, String pos)  {
     return false;
   }

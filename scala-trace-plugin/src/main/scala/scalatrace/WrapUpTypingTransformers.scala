@@ -220,7 +220,7 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
 
         case  DefDef(mods, name, tparams, vparamss, tpt, rhs) =>
           enter(tree, tree.symbol)
-          val allParamName = vparamss map { vparams => vparams map {_.name} } flatten 
+          val allParamName = vparamss map { vparams => vparams map {_.name} } flatten
           val newTree = if(!name.toString.contains("<init>"))
               treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt,
                 (flattenBlock(wrapUp(rhs, Some(tree.name), (tree.name + "@" + " $$$ " + allParamName , tree.pos)::Nil))))

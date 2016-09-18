@@ -1,4 +1,0 @@
-<plugin>
-	<name>scalatrace</name>
-	<classname>scalatrace.ScalaTracePlugin</classname>
-</plugin>

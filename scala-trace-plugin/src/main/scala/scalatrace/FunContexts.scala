@@ -17,14 +17,22 @@ trait FunContexts {
     var localTyper: analyzer.Typer
     var contexts: List[(Tree, Symbol)] = Nil
 
-    @inline protected def makePrintTrees(msg: List[(String, Position)]): List[Tree] = {
-      msg map { msg =>
+    @inline protected def makePrintTrees(msgs: List[(String, Position)]): List[Tree] = {
+      msgs map { msg =>
         val (dataFlow, pos) = msg
         val newTree = Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("log")),
           Literal(Constant(dataFlow)):: Literal(Constant(pos.focus.toString)) :: Nil)
-        localTyper.atOwner(contexts.head._2).typed(newTree)
+        localTyper.typed(newTree)
       }
     }
+
+    @inline protected def makePrintTree(msg: (String, Position)): Tree = {
+        val (dataFlow, pos) = msg
+        val newTree = Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("log")),
+          Literal(Constant(dataFlow)):: Literal(Constant(pos.focus.toString)) :: Nil)
+        localTyper.typed(newTree)
+    }
+
 
     @inline protected def makePrintTree(msg: String, pos: Position): Tree = {
         val newTree = Apply(Select(Select(Ident("scalatrace"), newTermName("ScalaTrace")), newTermName("log")),
@@ -59,7 +67,7 @@ trait FunContexts {
     if(msg.isEmpty)
       tree
     else
-        treeCopy.Block(tree, makePrintTrees(msg), tree)
+        localTyper.typed(Block(makePrintTrees(msg), tree))
     }
 
 }

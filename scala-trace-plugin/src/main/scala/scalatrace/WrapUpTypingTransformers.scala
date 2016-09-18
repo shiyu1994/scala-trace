@@ -50,12 +50,12 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
       var args: String = ""
       implBody foreach { tree =>
         tree match {
-          case ValDef(mods, name, tpt, rhs) => args = args + " " + tree.name
+          case ValDef(mods, name, tpt, rhs) => args = args + " " + tree.upName
           case _ => ""
         }
       }
       symbol.parentSymbols foreach { sym =>
-        args = args + " " + sym.name
+        args = args + " " + sym.name + "^"
       }
       return args
     }
@@ -135,6 +135,48 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
         case Ident(name) => (tree, Nil)
         case New(tpt) => (tree, Nil)
         case This(qual) => (tree, Nil)
+        case TypeTree() => (tree, Nil) //TODO
+      }
+    }
+
+    def parsePattern(tree: Tree): List[String] = {
+      tree match {
+
+        case Alternative(trees) =>
+          //Assumption: No name bindings in Alternative patterns
+          Nil
+
+        case Bind(name, body) =>
+          name.toString :: parsePattern(body)
+
+        case Ident(name) =>
+          tree.name :: Nil
+
+        case  UnApply(fun, args) =>
+          (args map {parsePattern(_)}).foldLeft(List[String]()) { (names: List[String], argNames: List[String]) =>
+            names ::: argNames
+          }
+
+        case Apply(fun, args) =>
+          (args map {parsePattern(_)}).foldLeft(List[String]()) { (names: List[String], argNames: List[String]) =>
+            names ::: argNames
+          }
+
+        case Literal(value) =>
+          Nil
+
+        case Typed(expr, args) =>
+          parsePattern(expr)
+
+        case Select(qualifier, selector) =>
+          //Assumption: No name bindings in Select patterns
+          Nil
+
+        case Star(elem) =>
+          //This case can only be reached by recursive calls in UnApply and Apply cases
+          //Star(elem) is not a pattern itself
+          //Assumption: No name bindings in Star
+          Nil
       }
     }
 
@@ -147,25 +189,26 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           val newTree = treeCopy.PackageDef(tree, pid, stats.map { wrapUp(_) } )
           exit()
           newTree
+
 //TODO ClassDef
         case  ClassDef(mods, name, tparams, impl) =>
           enter(tree, tree.symbol)
-          //val passConstructorArgs = makePrintCall("a_" + tree.symbol.name + "_" + tree.id,
-          //  tree.name + " $$$ " + getConstructorArgs(impl.body), tree.pos)
-          //val returnObj = makePrintCall("b_" + tree.symbol.name + "_" + tree.id, getValsAndParents(impl.body, tree.symbol) + " $$$ " + tree.name, tree.pos)
+          val passConstructorArgs = makePrintCall("a_" + tree.symbol.name + "_" + tree.id,
+            tree.upName + " $$$ " + getConstructorArgs(impl.body), tree.pos)
+          val returnObj = makePrintCall("b_" + tree.symbol.name + "_" + tree.id, getValsAndParents(impl.body, tree.symbol) + " $$$ " + tree.name, tree.pos)
           val newTree = treeCopy.ClassDef(tree, mods, name, tparams,
             treeCopy.Template(impl, impl.parents, impl.self,
-              impl.body.map { wrapUp(_) }  ))
+              insertIntoConstructor(impl.body.map { wrapUp(_) }, passConstructorArgs, returnObj)  ))
           exit()
           newTree
+
 //TODO ModuleDef
         case  ModuleDef(mods, name, impl) =>
           enter(tree, tree.symbol)
-          //println(tree.symbol.parentSymbols)
-          //val passConstructorArgs = makePrintCall("a_" + tree.symbol.name + "_" + tree.id, tree.name + " $$$ " + getConstructorArgs(impl.body), tree.pos)
-          //val returnObj = makePrintCall("b_" + tree.symbol.name + "_" + tree.id, getValsAndParents(impl.body, tree.symbol) + " $$$ " + tree.name, tree.pos)
+          val passConstructorArgs = makePrintCall("a_" + tree.symbol.name + "_" + tree.id, tree.upName + " $$$ " + getConstructorArgs(impl.body), tree.pos)
+          val returnObj = makePrintCall("b_" + tree.symbol.name + "_" + tree.id, getValsAndParents(impl.body, tree.symbol) + " $$$ " + tree.name, tree.pos)
           val newTree = treeCopy.ModuleDef(tree, mods, name,
-            treeCopy.Template(impl, impl.parents, impl.self, impl.body.map { wrapUp(_) }  ))
+            treeCopy.Template(impl, impl.parents, impl.self, insertIntoConstructor(impl.body.map { wrapUp(_) }, passConstructorArgs, returnObj) ))
           exit()
           newTree
 
@@ -177,70 +220,43 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
 
         case  DefDef(mods, name, tparams, vparamss, tpt, rhs) =>
           enter(tree, tree.symbol)
+          val allParamName = vparamss map { vparams => vparams map {_.name} } flatten 
           val newTree = if(!name.toString.contains("<init>"))
               treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt,
-                (flattenBlock(wrapUp(rhs, Some(tree.name)))))
+                (flattenBlock(wrapUp(rhs, Some(tree.name), (tree.name + "@" + " $$$ " + allParamName , tree.pos)::Nil))))
           else tree
           exit()
           newTree
 
 
         case LabelDef(name, params, rhs) =>
+          val allParamName =  params map {_.name}
           enter(tree, tree.symbol)
           val newTree = treeCopy.LabelDef(tree, name, params,
-            wrapUp(rhs, Some(tree.name)))
+            wrapUp(rhs, Some(tree.name), (tree.name + "@" + " $$$ " + allParamName, tree.pos)::Nil))
           exit()
           newTree
 
-        case  Template(parents, self, body) =>
-          treeCopy.Template(tree, parents, self, body map { wrapUp(_) })
 
         case  Block(stats, expr) =>
-         // println(tree + " " + tree.pos)
-          treeCopy.Block(tree,   (stats map { wrapUp(_) } ),
-            wrapUp(expr, Some(tree.name), (toBePrint ::: List((tree.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))))
-          tree
-
-        case  CaseDef(pat, guard, body) =>
-          treeCopy.CaseDef(tree, pat, guard,
-            wrapUp(body, None, toBePrint ::: List((guard.upName + " " +  body.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos))))
-
-        //TODO
-        case  Alternative(trees) =>
-          treeCopy.Alternative(tree, trees map { wrapUp(_) })
-
-        //TODO
-        case  Bind(name, body) =>
-          treeCopy.Bind(tree, name,
-            wrapUp(body))
+          treeCopy.Block(tree, makePrintTrees(toBePrint) ::: (stats map { wrapUp(_) } ),
+            wrapUp(expr, Some(tree.name),  beDependentBy.map{x => (tree.downName + " $$$ " + x, tree.pos)}.toList))
 
         case Apply(fun, args) =>
           val (qualTree, qualString) = parseFun(fun)
-          val allDeps: List[String] = ((args map {_.name}) ::: qualString)
+          val allArgName = (args map {_.downName})
+          val allDeps: List[String] = (allArgName ::: qualString)
           val allDependces: String = if(allDeps.length > 0) allDeps reduce {_ + " " + _} else ""
           wrapWithPrint(treeCopy.Apply(tree, qualTree, args map { wrapUp(_) }),
-            toBePrint ::: List((allDependces + " " + tree.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-
-
-        //TODO
-        case  UnApply(fun, args) =>
-          val (qualTree, qualString) = parseFun(fun)
-          val allDeps = ((args map {_.name}) ::: qualString)
-          val allDependces = if(allDeps.length > 0) allDeps reduce {_ + " " + _} else ""
-          wrapWithPrint(treeCopy.ApplyDynamic(tree, qualTree, args map { wrapUp(_) }),
-            toBePrint ::: List((allDependces + " " + tree.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-
-        case ApplyDynamic(qual, args) =>
-          val (qualTree, qualString) = parseFun(qual)
-          val allDeps = ((args map {_.name}) ::: qualString)
-          val allDependces = if(allDeps.length > 0) allDeps reduce {_ + " " + _} else ""
-          wrapWithPrint(treeCopy.ApplyDynamic(tree, qualTree, args map { wrapUp(_) }),
-            toBePrint ::: List((allDependces + " " + tree.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
+            toBePrint :::
+              beDependentBy.map{x => (allDependces + " " + tree.downName + " $$$ " + x, tree.pos)}.toList :::
+              List((allArgName + " $$$ " + fun.name + "@", tree.pos)))
 
         case Function(vparams, body) =>
           enter(tree, tree.symbol)
+          val allParamName = vparams map {_.name}
           val newTree = treeCopy.Function(tree, vparams,
-            wrapUp(body, Some(tree.name)))
+            wrapUp(body, Some(tree.name), (tree.name + "@" + " $$$ " + allParamName, tree.pos)::Nil))
           exit()
           wrapWithPrint(newTree, toBePrint ::: List((tree.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
 
@@ -252,36 +268,113 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           exit()
           newTree
 
-        case AssignOrNamedArg(lhs, rhs) =>
-          enter(tree)
-          val newTree = treeCopy.AssignOrNamedArg(tree, lhs,
-            wrapUp(rhs, Some(lhs.name)))
-          wrapWithPrint(newTree, toBePrint)
-          exit()
-          newTree
-
         case If(cond, thenp, elsep) =>
           treeCopy.If(tree, wrapWithPrint(wrapUp(cond), toBePrint),
-            wrapUp(thenp, None, (cond.upName + " " + thenp.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos) :: Nil),
-            wrapUp(elsep, None, (cond.upName + " " + elsep.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos) :: Nil))
+            wrapUp(thenp, Some(tree.name), beDependentBy.map {x => (cond.upName + " " + tree.downName + " $$$ " + x, tree.pos)}.toList),
+            wrapUp(elsep, Some(tree.name), beDependentBy.map {x => (cond.upName + " " + tree.downName + " $$$ " + x, tree.pos)}.toList))
 
         case Match(selector, cases) =>
           treeCopy.Match(tree, wrapWithPrint(wrapUp(selector), toBePrint),
-            cases map { _case => treeCopy.CaseDef(_case, _case.pat, _case.guard,
-              wrapUp(_case.body, None, (selector.upName + " " + _case.body.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos) :: Nil)) })
+            cases map { _case =>
+              val patNames = parsePattern(_case.pat)
+
+              treeCopy.CaseDef(_case, _case.pat, wrapUp(_case.guard),
+                wrapUp(_case.body, Some(tree.name),
+                beDependentBy.map { x => (selector.upName + " " + tree.downName + " $$$ " + x, tree.pos) }.toList :::
+                List((selector.upName + " $$$ " + patNames, tree.pos))))
+            })
 
         case Return(expr) =>
           treeCopy.Return(tree, wrapUp(expr, beDependentBy, toBePrint))
 
         case Try(block, catches, finalizer) =>
-          treeCopy.Try(tree, wrapUp(block, beDependentBy, toBePrint),
+          treeCopy.Try(tree, wrapUp(block, Some(tree.name), toBePrint ::: beDependentBy.map {x => (tree.downName + " $$$ " + x, tree.pos)}.toList),
             catches map { _case => treeCopy.CaseDef(_case, _case.pat, _case.guard, wrapUp(_case.body)) },
             wrapUp(finalizer))
 
         case Throw(expr) =>
           treeCopy.Throw(tree, wrapUp(expr))
 
-        case New(tpt) =>
+        case Typed(expr, tpt) =>
+          treeCopy.Typed(tree, wrapUp(expr, beDependentBy, toBePrint), tpt)
+
+        case TypeApply(fun, args) =>
+          val (qualTree, qualString) = parseFun(fun)
+          wrapWithPrint(treeCopy.TypeApply(tree, qualTree, args),
+            toBePrint ::: beDependentBy.map { x => (qualString + " " + tree.name + " $$$ " + x, tree.pos) }.toList)
+
+        case This(qual) =>
+          wrapWithPrint(tree, toBePrint :::
+            List((tree.upName + " $$$ " + tree.name, tree.pos)) :::
+            beDependentBy.map{ x => (tree.upName + " $$$ " + x, tree.pos)}.toList)
+
+        case Ident(name) =>
+          if(tree.symbol.isMethod)
+            wrapWithPrint(tree, toBePrint :::
+              List((tree.downName + " $$$ " + tree.name, tree.pos)) :::
+              beDependentBy.map {x => (tree.downName + " $$$ " + x, tree.pos)}.toList)
+          else
+            wrapWithPrint(tree, toBePrint :::
+              List((tree.upName + " $$$ " + tree.name, tree.pos)) :::
+              beDependentBy.map {x => (tree.upName + " $$$ " + x, tree.pos)}.toList)
+
+        case Literal(value) => wrapWithPrint(tree, toBePrint :::
+          beDependentBy.map { x => (tree.name + " $$$ " + x, tree.pos)}.toList)
+
+        case Select(qualifier, selector) =>
+          val (qualTree, qualString) = parseFunQualifier(qualifier)
+          val allDependces = if(qualString.length > 0) qualString reduce {_ + " " + _} else ""
+          if(tree.symbol.isMethod)
+            wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
+              toBePrint :::
+                List((tree.downName + " $$$ " + tree.name, tree.pos)) :::
+                beDependentBy.map {x => (allDependces + " " + tree.downName + " $$$ " + x, tree.pos)}.toList)
+          else
+            wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
+              toBePrint :::
+                List((tree.upName + " $$$ " + tree.name, tree.pos)) :::
+                beDependentBy.map {x => (allDependces + " " + tree.upName + " $$$ " + x, tree.pos)}.toList)
+
+        case Import(expr, selectors) => tree
+
+        case TypeDef(mods, name, tparams, rhs) => tree
+
+        case EmptyTree => tree
+
+        case _ => tree
+
+       /* case  Template(parents, self, body) =>
+          treeCopy.Template(tree, parents, self, body map { wrapUp(_) })
+*/
+       /* case  CaseDef(pat, guard, body) =>
+          treeCopy.CaseDef(tree, pat, wrapUp(guard),
+            wrapUp(body, Some(tree.name), toBePrint :::
+              beDependentBy.map { x => (guard.upName + " " +  body.downName + " $$$ " + x, tree.pos) }.toList))
+*/
+       /* case ApplyDynamic(qual, args) =>
+          println("==================== ApplyDynamic")
+          println(tree.pos)
+          println(tree)
+          val (qualTree, qualString) = parseFun(qual)
+          val allDeps = ((args map {_.name}) ::: qualString)
+          val allDependces = if(allDeps.length > 0) allDeps reduce {_ + " " + _} else ""
+          wrapWithPrint(treeCopy.ApplyDynamic(tree, qualTree, args map { wrapUp(_) }),
+            toBePrint ::: beDependentBy.map{x => (allDependces + " " + tree.downName + " $$$ " + x, tree.pos)}.toList)*/
+
+
+     /*   case AssignOrNamedArg(lhs, rhs) =>
+          println("==================== AssignOrNamedArg")
+          println(tree.pos)
+          println(tree)
+          enter(tree)
+          val newTree = treeCopy.AssignOrNamedArg(tree, lhs,
+            wrapUp(rhs, Some(lhs.name)))
+          wrapWithPrint(newTree, toBePrint)
+          exit()
+          newTree*/
+
+ /*       case New(tpt) =>
+          println("================ NEW")
           treeCopy.New(tree, wrapUp(tpt))
 
           //TODO
@@ -289,36 +382,15 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           println("======================= ArrayValue " + tree)
           println(tree.pos)
           treeCopy.ArrayValue(tree, elemtpt, trees map { wrapUp(_) })
+*/
 
-        case Typed(expr, tpt) =>
-          treeCopy.Typed(tree, wrapUp(expr, beDependentBy, toBePrint), tpt)
-
-        case TypeApply(fun, args) =>
-          treeCopy.TypeApply(tree, fun, args)
-
-        case Super(qual, mix) =>
+   /*     case Super(qual, mix) =>
           println("======================= Super " + tree)
           println(tree.pos)
           treeCopy.Super(tree, qual, mix)
+*/
 
-        case This(qual) => wrapWithPrint(tree, toBePrint ::: List((tree.upName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-
-        case Ident(name) =>
-         wrapWithPrint(tree, toBePrint ::: List((tree.upName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-
-        case Literal(value) => wrapWithPrint(tree, toBePrint ::: List((tree.name + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-
-        case Select(qualifier, selector) =>
-          val (qualTree, qualString) = parseFunQualifier(qualifier)
-          val allDependces = if(qualString.length > 0) qualString reduce {_ + " " + _} else ""
-          if(tree.symbol.isMethod)
-            wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
-              toBePrint ::: List((allDependces + " " + tree.downName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-          else
-            wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
-              toBePrint ::: List((allDependces + " " + tree.upName + " $$$ " + beDependentBy.getOrElse(""), tree.pos)))
-
-        case RefTree(qualifier, selector) =>
+/*        case RefTree(qualifier, selector) =>
           println("======================= RefTree " + tree)
           println(tree.pos)
           tree
@@ -327,15 +399,18 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           println("======================= ReferenceToBoxed " + tree)
           println(tree.pos)
           tree
-
-        case TypeTree() => tree
-
-        case Annotated(annot, arg) =>
+*/
+ /*       case TypeTree() => {
+          println("========================= TypeTree")
+          tree
+        }
+*/
+  /*      case Annotated(annot, arg) =>
           println("======================= Annotated " + tree)
           println(tree.pos)
           tree
-
-        case SingletonTypeTree(ref) =>
+*/
+  /*      case SingletonTypeTree(ref) =>
           println("======================= SingletonTypeTree " + tree)
           println(tree.pos)
           tree
@@ -364,17 +439,13 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts with 
           println("======================= ExistentialTypeTree " + tree)
           println(tree.pos)
           tree
+*/
 
-        case Import(expr, selectors) => tree
-
-        case TypeDef(mods, name, tparams, rhs) => tree
-
-        case Star(elem) =>
+   /*     case Star(elem) =>
           println("======================= Star " + tree)
           println(tree.pos)
           tree
-
-        case EmptyTree => tree
+*/
       }
     }
   }

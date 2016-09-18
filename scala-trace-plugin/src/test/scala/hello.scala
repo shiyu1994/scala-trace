@@ -166,7 +166,7 @@ object Iterator {
     *  flattening the unevaluated iterators out into a vector of closures.
     */
   private[scala] final class ConcatIterator[+A](private[this] var current: Iterator[A], initial: Vector[() => Iterator[A]]) extends Iterator[A] {
-   // @deprecated def this(initial: Vector[() => Iterator[A]]) = this(Iterator.empty, initial) // for binary compatibility
+    //@deprecated def this(initial: Vector[() => Iterator[A]]) = this(Iterator.empty, initial) // for binary compatibility
     private[this] var queue: Vector[() => Iterator[A]] = initial
     // Advance current to the next non-empty iterator
     // current is set to null when all iterators are exhausted
@@ -189,7 +189,7 @@ object Iterator {
   }
 
   private[scala] final class JoinIterator[+A](lhs: Iterator[A], that: => GenTraversableOnce[A]) extends Iterator[A] {
-    private[this] lazy val rhs: Iterator[A] = that.toIterator
+    private[this]  val rhs: Iterator[A] = that.toIterator
     def hasNext = lhs.hasNext || rhs.hasNext
     def next()  = if (lhs.hasNext) lhs.next() else rhs.next()
 
@@ -222,23 +222,7 @@ object Iterator {
       else if (unbounded) underlying.next()
       else empty.next()
     }
-    /*override protected def sliceIterator(from: Int, until: Int): Iterator[A] = {
-      val lo = from max 0
-      def adjustedBound =
-        if (unbounded) -1
-        else 0 max (remaining - lo)
-      val rest =
-        if (until < 0) adjustedBound          // respect current bound, if any
-        else if (until <= lo) 0               // empty
-        else if (unbounded) until - lo        // now finite
-        else adjustedBound min (until - lo)   // keep lesser bound
-      if (rest == 0) empty
-      else {
-        dropping += lo
-        remaining = rest
-        this
-      }
-    }*/
+
   }
 }
 
@@ -499,7 +483,14 @@ trait Iterator[+A] extends TraversableOnce[A] {
     */
   def withFilter(p: A => Boolean): Iterator[A] = filter(p)
 
-
+  /** Creates an iterator over all the elements of this iterator which
+    *  do not satisfy a predicate p.
+    *
+    *  @param p the predicate used to test values.
+    *  @return  an iterator which produces those values of this iterator which do not satisfy the predicate `p`.
+    *  @note    Reuse: $consumesAndProducesIterator
+    */
+  def filterNot(p: A => Boolean): Iterator[A] = filter(!p(_))
 
   /** Creates an iterator by transforming values
     *  produced by this iterator with a partial function, dropping those
@@ -619,7 +610,7 @@ trait Iterator[+A] extends TraversableOnce[A] {
       else { skip(); self.next() }
     }
     val l = new PartitionIterator(p)
-    val r: PartitionIterator = null//new PartitionIterator(!p(_))
+    val r = new PartitionIterator(!p(_))
     l.other = r
     r.other = l
     (l, r)
@@ -776,7 +767,23 @@ trait Iterator[+A] extends TraversableOnce[A] {
       else Iterator.empty.next()
   }
 
-
+  /** Creates an iterator formed from this iterator and another iterator
+    *  by combining corresponding values in pairs.
+    *  If one of the two iterators is longer than the other, its remaining
+    *  elements are ignored.
+    *
+    *  @param   that  The iterator providing the second half of each result pair
+    *  @return        a new iterator containing pairs consisting of
+    *                 corresponding elements of this iterator and `that`. The number
+    *                 of elements returned by the new iterator is the
+    *                 minimum of the number of elements returned by this
+    *                 iterator and `that`.
+    *  @note          Reuse: $consumesTwoAndProducesOneIterator
+    */
+  def zip[B](that: Iterator[B]): Iterator[(A, B)] = new AbstractIterator[(A, B)] {
+    def hasNext = self.hasNext && that.hasNext
+    def next = (self.next(), that.next())
+  }
 
   /** Appends an element value to this iterator until a given target length is reached.
     *
@@ -808,7 +815,7 @@ trait Iterator[+A] extends TraversableOnce[A] {
     *                 corresponding elements of this iterator and their indices.
     *  @note          Reuse: $consumesAndProducesIterator
     */
-  def zipWithIndex: Iterator[(A, Int)] =  null /*new AbstractIterator[(A, Int)] {
+  def zipWithIndex: Iterator[(A, Int)] = new AbstractIterator[(A, Int)] {
     var idx = 0
     def hasNext = self.hasNext
     def next = {
@@ -816,7 +823,7 @@ trait Iterator[+A] extends TraversableOnce[A] {
       idx += 1
       ret
     }
-  }*/
+  }
 
   /** Creates an iterator formed from this iterator and another iterator
     *  by combining corresponding elements in pairs.
@@ -897,8 +904,15 @@ trait Iterator[+A] extends TraversableOnce[A] {
     res
   }
 
-
- // def contains(elem: Any): Boolean = exists(_ == elem)    // Note--this seems faster than manual inlining!
+  /** Tests whether this iterator contains a given value as an element.
+    *  $mayNotTerminateInf
+    *
+    *  @param elem  the element to test.
+    *  @return     `true` if this iterator produces some value that is
+    *               is equal (as determined by `==`) to `elem`, `false` otherwise.
+    *  @note        Reuse: $consumesIterator
+    */
+  def contains(elem: Any): Boolean = exists(_ == elem)    // Note--this seems faster than manual inlining!
 
   /** Finds the first value produced by the iterator satisfying a
     *  predicate, if any.
@@ -1099,7 +1113,7 @@ trait Iterator[+A] extends TraversableOnce[A] {
         val shortBy = count - res.length
         if (shortBy > 0 && pad.isDefined) res ++ padding(shortBy) else res
       }
-      lazy val len = xs.length
+       val len = xs.length
       lazy val incomplete = len < count
 
       // if 0 elements are requested, or if the number of newly obtained
@@ -1338,4 +1352,3 @@ trait Iterator[+A] extends TraversableOnce[A] {
 
 /** Explicit instantiation of the `Iterator` trait to reduce class file size in subclasses. */
 abstract class AbstractIterator[+A] extends Iterator[A]
-

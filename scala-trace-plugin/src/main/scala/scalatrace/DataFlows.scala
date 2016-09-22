@@ -48,28 +48,32 @@ trait DataFlows {
     val tos: Set[RawName] = Set()
     val poses: Set[Position] = Set()
 
+    private def isUsefulName(name: RawName): Boolean = {
+      !(name.rawName == "<none>" || name.rawName == "")
+    }
+
     def addFrom(rawName: RawName*): DataFlow = {
-      rawName foreach { froms.add(_) }
+      rawName filter { isUsefulName(_) } foreach { froms.add(_) }
       this
     }
 
     def addFrom(rawName: List[RawName]): DataFlow = {
-      rawName foreach(addFrom(_))
+      rawName filter { isUsefulName(_) } foreach(addFrom(_))
       this
     }
 
     def addTo(rawName: RawName*): DataFlow = {
-      rawName foreach { tos.add(_) }
+      rawName filter { isUsefulName(_) } foreach { tos.add(_) }
       this
     }
 
     def addTo(rawName: List[RawName]): DataFlow = {
-      rawName foreach(addTo(_))
+      rawName filter { isUsefulName(_) } foreach(addTo(_))
       this
     }
 
     def addPos(pos: Position*): DataFlow = {
-      pos foreach { poses.add(_) }
+      pos filter {_ != NoPosition} foreach { poses.add(_) }
       this
     }
 
@@ -103,7 +107,7 @@ trait DataFlows {
 
     case  Alternative(trees) => ""
 
-    case  Bind(name, body) => name.toString
+    case  Bind(name, body) => if(tree.symbol ne null) tree.symbol.fullName.toString else ""
 
     case Apply(fun, args) => getName(fun)
 

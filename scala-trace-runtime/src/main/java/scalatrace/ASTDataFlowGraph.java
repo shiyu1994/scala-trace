@@ -35,8 +35,9 @@ public class ASTDataFlowGraph {
     void log(String[] froms, String[] tos, String[] poses) {
         Set<ASTDataFlowGraphNode> toNodes = new HashSet<>();
         for(String pos : poses) {
-            if(pos.contains("/library/scala/reflect/ClassTag"))
+            if(pos.contains("/library/scala/reflect/ClassTag")) {
                 return;
+            }
             if(lineMapToNode.containsKey(pos)) {
                 toNodes.add(lineMapToNode.get(pos));
             } else {

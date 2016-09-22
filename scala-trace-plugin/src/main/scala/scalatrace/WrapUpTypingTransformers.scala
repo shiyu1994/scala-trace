@@ -253,12 +253,12 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
               toDataFlow.map{x => x.addFrom(tree.downName)}.toList))
 
         case Apply(fun, args) =>
-          val (qualTree, qualString) = parseFun(fun)
+          val (qualTree, qualNames) = parseFun(fun)
           val argNames = (args map {_.downName})
-          val allDeps: List[RawName] = (argNames ::: qualString)
+          val allDeps: List[RawName] = (argNames ::: qualNames)
           wrapWithPrint(treeCopy.Apply(tree, qualTree, args map { wrapUp(_) }),
             dataFlows ::: toDataFlow.map {x => x.addFrom(allDeps)}.toList :::
-              List(DataFlow().addFrom(argNames).addTo(tree.passFuncName).addPos(tree.pos)))
+              List(DataFlow().addFrom(allDeps).addTo(tree.passFuncName).addPos(tree.pos)))
 
         case Function(vparams, body) =>
           enter(tree, tree.symbol)
@@ -291,7 +291,7 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
               treeCopy.CaseDef(_case, _case.pat, wrapUp(_case.guard),
                 wrapUp(_case.body, Some(DataFlow().addTo(tree.rawName).addPos(tree.pos)),
                 toDataFlow.map { x => x.addFrom(selector.upName, tree.downName) }.toList :::
-                  List(DataFlow().addFrom(selector.upName).addTo(patNames).addPos(_case.pat.pos))))
+                  List(DataFlow().addFrom(selector.upName).addTo(patNames).addPos(_case.pat.pos)))) 
             })
 
         case Return(expr) =>
@@ -336,12 +336,12 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
           if(tree.symbol.isMethod)
             wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
               dataFlows :::
-                List(DataFlow().addFrom(tree.downName).addTo(tree.rawName).addPos(tree.pos)) :::
+                List(DataFlow().addFrom(tree.downName :: qualNames).addTo(tree.rawName).addPos(tree.pos)) :::
                 toDataFlow.map {x => x.addFrom(tree.downName :: qualNames)}.toList)
           else
             wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
               dataFlows :::
-                List(DataFlow().addFrom(tree.upName).addTo(tree.rawName).addPos(tree.pos)) :::
+                List(DataFlow().addFrom(tree.upName :: qualNames).addTo(tree.rawName).addPos(tree.pos)) :::
                 toDataFlow.map {x => x.addFrom(tree.upName :: qualNames)}.toList)
 
         case Import(expr, selectors) => tree

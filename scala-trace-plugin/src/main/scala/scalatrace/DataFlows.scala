@@ -49,7 +49,7 @@ trait DataFlows {
     val poses: Set[Position] = Set()
 
     private def isUsefulName(name: RawName): Boolean = {
-      !(name.rawName == "<none>" || name.rawName == "")
+      !(name.rawName == "<none>" || name.rawName == "" || name.rawName == "#")
     }
 
     def addFrom(rawName: RawName*): DataFlow = {
@@ -143,16 +143,16 @@ trait DataFlows {
 
     case This(qual) => tree.symbol.fullName.toString
 
-    case Ident(name) => tree.symbol.fullName.toString
+    case Ident(name) => if(tree.symbol.isValue) tree.symbol.fullName.toString else ""
 
     case Literal(value) => "#"
 
-    case Select(qualifier, selector) => {
+    case Select(qualifier, selector) => if(tree.symbol.isValue) tree.symbol.fullName.toString else ""/*{
       tree match {
         case Select(New(tpt), _) => getName(tpt)
         case _ => tree.symbol.fullName.toString
       }
-    }
+    }*/
 
     case RefTree(qualifier, selector) => ""
 

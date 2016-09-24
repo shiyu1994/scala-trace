@@ -13,11 +13,13 @@ trait FunContexts extends DataFlows {
   val global: Global
 
   import global._
+  import ReadWriteTree._
 
   protected trait FunContext {
     var localTyper: analyzer.Typer
     var contexts: List[(Tree, Symbol)] = Nil
     var lazyBuffer: List[DataFlow] = Nil
+    var constructorBuffer: List[DataFlow] = Nil
 
     private def parsePos(pos: Position): String = {
       def leaveOutOffset(pos: Position): String = {
@@ -78,6 +80,15 @@ trait FunContexts extends DataFlows {
             val newTree = makeWrapLogTree (tree, lazyBuffer ::: dataFlows filter {dataFlow => !dataFlow.froms.isEmpty && !dataFlow.tos.isEmpty})
             lazyBuffer = Nil
             newTree
+        }
+      } else if(symbol.isConstructor) {
+        if(treeInfo.isSelfConstrCall(tree) || treeInfo.isSuperConstrCall(tree)) {
+          constructorBuffer = constructorBuffer ::: dataFlows
+          tree
+        } else {
+          val newTree = localTyper.typed(Block(constructorBuffer ::: dataFlows filter { dataFlow => !dataFlow.froms.isEmpty && !dataFlow.tos.isEmpty} map {makeLogTree(_)}, tree))
+          constructorBuffer = Nil
+          newTree
         }
       }
       else localTyper.typed(Block(dataFlows filter {dataFlow => !dataFlow.froms.isEmpty && !dataFlow.tos.isEmpty} map {makeLogTree(_)}, tree))

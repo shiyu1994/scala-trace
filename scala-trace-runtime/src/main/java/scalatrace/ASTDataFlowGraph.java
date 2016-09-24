@@ -19,12 +19,13 @@ public class ASTDataFlowGraph {
     static public int totalLines = 0;
     static public int usefulLines = 0;
     static FileWriter totoalLinesFile, usefulLinesFile, logFile;
+    static public String logFilePrefix = System.getenv("LOGFILENAME");
 
     ASTDataFlowGraph(String[] products) {
         try {
-            totoalLinesFile =  new FileWriter("all-lines");
-            usefulLinesFile = new FileWriter("useful-lines");
-            logFile = new FileWriter("log-file");
+            totoalLinesFile =  new FileWriter(logFilePrefix + "-" + "all-lines");
+            usefulLinesFile = new FileWriter(logFilePrefix + "-" + "useful-lines");
+            logFile = new FileWriter(logFilePrefix + "-ratio");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,9 +36,6 @@ public class ASTDataFlowGraph {
     void log(String[] froms, String[] tos, String[] poses) {
         Set<ASTDataFlowGraphNode> toNodes = new HashSet<>();
         for(String pos : poses) {
-            if(pos.contains("/library/scala/reflect/ClassTag")) {
-                return;
-            }
             if(lineMapToNode.containsKey(pos)) {
                 toNodes.add(lineMapToNode.get(pos));
             } else {
@@ -85,7 +83,8 @@ public class ASTDataFlowGraph {
             for(ASTDataFlowGraphNode toNode : toNodes) {
                 toNameLastWrittenBy.add(toNode);
             }
-            nameLastWrittenBy.put(toName, toNameLastWrittenBy);
+            if(!toName.endsWith("@"))
+                nameLastWrittenBy.put(toName, toNameLastWrittenBy);
             if(backpatchMap.containsKey(toName)) {
                 for(ASTDataFlowGraphNode toNode : toNodes) {
                     for(ASTDataFlowGraphNode toBeBackpatched : backpatchMap.get(toName)) {

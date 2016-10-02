@@ -12,6 +12,6 @@ Usage:
 
 3. The plugin jar will be generated in directory scala-trace-plugin/target/scala-2.11/
 
-4. Add "-Xplugin:<path to the plugin jar> -P:scalatrace:targetline:<the source code line that writes the final result of the Scala program>"
+4. Add "-Xplugin:\<path to the plugin jar> -P:scalatrace:targetline:\<the source code line that writes the final result of the Scala program>"
 
 Note that the target source code line in step 4 needs to specify the full path of the source file. The source file and the line number should be separated by a #, for example /Users/shiyu/Try.scala#line-14

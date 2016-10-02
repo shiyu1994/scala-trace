@@ -6,14 +6,14 @@ import java.util.*;
 
 class ICodeDataFlowGraph  {
 
+    protected HashMap<String, ICodeDataFlowGraphNode> nameLastWrittenBy;
+    protected HashMap<String, ICodeDataFlowGraphNode> lineMapToNode;
+
     protected Set<String> products = new TreeSet();
     static private FileWriter usefulLines;
     static private FileWriter usefulRate;
 
     static public Queue<String> debug = new LinkedList();
-
-    protected HashMap<String, ICodeDataFlowGraphNode> nameLastWrittenBy;
-    protected HashMap<String, ICodeDataFlowGraphNode> lineMapToNode;
 
     static private Integer counter = 0;
     static private Integer useful = 0;

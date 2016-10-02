@@ -6,7 +6,6 @@ package scalatrace
 
 import scala.collection.mutable.Set
 import scala.tools.nsc.Global
-import scalatrace.DataFlowExceptions.NoUpOrDownForRawName
 
 trait DataFlows {
   val global: Global
@@ -49,7 +48,7 @@ trait DataFlows {
     val poses: Set[Position] = Set()
 
     private def isUsefulName(name: RawName): Boolean = {
-      !(name.rawName == "<none>" || name.rawName == "" || name.rawName == "#")
+      true//!(name.rawName == "<none>" || name.rawName == "" || name.rawName == "#")
     }
 
     def addFrom(rawName: RawName*): DataFlow = {
@@ -73,12 +72,12 @@ trait DataFlows {
     }
 
     def addPos(pos: Position*): DataFlow = {
-      pos filter {_ != NoPosition} foreach { poses.add(_) }
+      pos /*filter {_ != NoPosition}*/ foreach { poses.add(_) }
       this
     }
 
-    def addPos(rawName: List[Position]): DataFlow = {
-      rawName foreach(addPos(_))
+    def addPos(pos: List[Position]): DataFlow = {
+      pos foreach(addPos(_))
       this
     }
 
@@ -87,13 +86,13 @@ trait DataFlows {
 
   def getName(tree: Tree): String = tree match {
 
+    case  ValDef(mods, name, tpt, rhs) => tree.symbol.fullName.toString
+
     case  PackageDef(pid, stats) => tree.symbol.fullName.toString
 
     case  ClassDef(mods, name, tparams, impl) => tree.symbol.fullName.toString
 
     case  ModuleDef(mods, name, impl) => tree.symbol.fullName.toString
-
-    case  ValDef(mods, name, tpt, rhs) => tree.symbol.fullName.toString
 
     case  DefDef(mods, name, tparams, vparamss, tpt, rhs) => tree.symbol.fullName.toString
 

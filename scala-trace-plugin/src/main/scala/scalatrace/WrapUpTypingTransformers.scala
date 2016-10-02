@@ -5,6 +5,7 @@ package scalatrace
  */
 
 import scala.tools.nsc.transform.TypingTransformers
+import DataFlowExceptions._
 
 trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
 
@@ -34,53 +35,117 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
       }
     }
 
-    /*def getConstructorArgs(implBody: List[Tree]): (List[RawName], RawName, List[DataFlow]) = {
-      var args: List[RawName] = Nil
-      var constructor: Tree = EmptyTree
-      var callsInConstructor = List[DataFlow]()
-      implBody map { tree =>
-        tree match {
-          case DefDef(mods, name, tparams, vparamss, tpt, rhs) if(tree.symbol.isConstructor) =>
-            vparamss foreach {vparams => vparams foreach {vparam => args = (args ::: List(vparam.rawName))}}
-            constructor = tree
-            val newRhs: Tree = rhs match {
-              case Block(stats, expr) =>
-                if(!stats.isEmpty) {
-                  val newStats = stats.head ::
-                    makeLogTree(DataFlow().addFrom(args).addTo(constructor.passFuncName).addPos(stats.head.pos)) ::
-                    stats map {wrapUp(_)}
-                }
-                treeCopy.Block(rhs, stats map { stat =>
-                 stat match
-                  {
-                    case Apply(fun, args) =>
-                      List(stat, makeLogTree(DataFlow().addFrom(args map {_.upName}).addTo(fun.passFuncName)))
-                    case _ => println(stat.pos + " " + stat)
-                     wrapUp(stat)
-                  }
-                } flatten, expr)
-              }
+    def getNameAsArg(tree: Tree): RawName = tree match {
 
-            treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt, newRhs)
-          case _ => tree
-        }
-      }
-      //return (args, constructor.passFuncName, callsInConstructor)
-    }*/
+      case  ValDef(mods, name, tpt, rhs) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
 
-    /*def getValsAndParents(implBody: List[Tree], symbol: Symbol): List[RawName] = {
+      case  PackageDef(pid, stats) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case  ClassDef(mods, name, tparams, impl) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case  ModuleDef(mods, name, impl) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case  DefDef(mods, name, tparams, vparamss, tpt, rhs) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case LabelDef(name, params, rhs) => tree.downName
+
+      case  Template(parents, self, body) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case  Block(stats, expr) => tree.downName
+
+      case  CaseDef(pat, guard, body) => tree.downName
+
+      case  Alternative(trees) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case  Bind(name, body) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case Apply(fun, args) => tree.downName
+
+      case  UnApply(fun, args) => tree.downName
+
+      case ApplyDynamic(qual, args) => tree.downName
+
+      case Function(vparams, body) => tree.downName
+
+      case Assign(lhs, rhs) => lhs.downName
+
+      case AssignOrNamedArg(lhs, rhs) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case If(cond, thenp, elsep) => tree.downName
+
+      case Match(selector, cases) => tree.downName
+
+      case Return(expr) => getNameAsArg(expr)
+
+      case Try(block, catches, finalizer) => tree.downName
+
+      case Throw(expr) => getNameAsArg(expr)
+
+      case New(tpt) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case ArrayValue(elemtpt, trees) => tree.downName
+
+      case Typed(expr, tpt) => getNameAsArg(expr)
+
+      case TypeApply(fun, args) => tree.upName
+
+      case Super(qual, mix) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case This(qual) => tree.upName
+
+      case Ident(name) => if(tree.symbol.isMethod) tree.downName else tree.upName
+
+      case Literal(value) => tree.upName
+
+      case Select(qualifier, selector) => if(tree.symbol.isMethod) tree.downName else tree.upName
+
+      case RefTree(qualifier, selector) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case ReferenceToBoxed(idt) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case TypeTree() => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case Annotated(annot, arg) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case SingletonTypeTree(ref) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case SelectFromTypeTree(qualifier, selector) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case CompoundTypeTree(templ) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case AppliedTypeTree(tpt, args) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case TypeBoundsTree(lo, hi) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case ExistentialTypeTree(tpt, whereClauses) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case Import(expr, selectors) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case TypeDef(mods, name, tparams, rhs) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case Star(elem) => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+
+      case EmptyTree => throw new CannotBeArgument(tree.toString() + " " + tree.pos + " " + tree.getClass)
+    }
+
+    def getValsAndParents(implBody: List[Tree], symbol: Symbol): List[RawName] = {
       var args: List[RawName] = Nil
       implBody foreach { tree =>
         tree match {
           case ValDef(mods, name, tpt, rhs) => args = args ::: List(tree.upName)
+          case DefDef(mods, name, tparams, vparamss, tpt, rhs) if(tree.symbol.isConstructor) =>
+            rhs match {
+              case Block(stats, expr) => stats foreach { stat =>
+                if(treeInfo.isSelfOrSuperConstrCall(stat) && !(stat.rawName.toString.contains(".Object.") ||
+                  stat.rawName.toString.contains(".AnyRef.") ||
+                  stat.rawName.toString.contains(".AnyVal.") ||
+                  stat.rawName.toString.contains(".Any."))) {
+                  args = args ::: List(stat.upName)
+                }
+              }
+            }
           case _ =>
         }
-      }
-      symbol.parentSymbols /*filter { parentSymbol => parentSymbol.name.toString != "Object" &&
-        parentSymbol.name.toString != "AnyRef" &&
-        parentSymbol.name.toString != "AnyVal" &&
-        parentSymbol.name.toString != "Any"}*/ .foreach { sym =>
-        args = args ::: List(UpName(sym.fullName.toString))
       }
       return args
     }
@@ -99,7 +164,7 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
           case _ => tree
         }
       }
-    }*/
+    }
 
     def parseFunQualifier(tree: Tree): (Tree, List[RawName]) = {
       tree match {
@@ -214,26 +279,21 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
           exit()
           newTree
 
-//TODO ClassDef: more about initialization
         case  ClassDef(mods, name, tparams, impl) =>
           enter(tree, tree.symbol)
-          //val (constructorArgs, constructorName, callsInConstructor) = getConstructorArgs(impl.body)
-          //val passConstructorArgs = makeLogTree(DataFlow().addFrom(constructorName).addTo(constructorArgs).addPos(tree.pos))
-          //val returnObj = makeLogTree(DataFlow().addFrom(getValsAndParents(impl.body, tree.symbol)).addTo(constructorName).addPos(tree.pos))
+          enterClass(getValsAndParents(impl.body, tree.symbol))
           val newTree = treeCopy.ClassDef(tree, mods, name, tparams,
-            treeCopy.Template(impl, impl.parents, impl.self,
-              /*insertIntoConstructor(*/impl.body.map { wrapUp(_) }/*, passConstructorArgs, callsInConstructor map { makeLogTree(_) }, returnObj)*/  ))
+            treeCopy.Template(impl, impl.parents, impl.self, impl.body.map { wrapUp(_) }))
+          exitClass()
           exit()
           newTree
 
-//TODO ModuleDef
         case  ModuleDef(mods, name, impl) =>
           enter(tree, tree.symbol)
-          //val (constructorArgs, constructorName, callsInConstructor) = getConstructorArgs(impl.body)
-          //val passConstructorArgs = makeLogTree(DataFlow().addFrom(constructorName).addTo(constructorArgs).addPos(tree.pos))
-          //val returnObj = makeLogTree(DataFlow().addFrom(getValsAndParents(impl.body, tree.symbol)).addTo(constructorName).addPos(tree.pos))
+          enterClass(getValsAndParents(impl.body, tree.symbol))
           val newTree = treeCopy.ModuleDef(tree, mods, name,
-            treeCopy.Template(impl, impl.parents, impl.self, /*insertIntoConstructor(*/impl.body.map { wrapUp(_) }/*, passConstructorArgs, callsInConstructor map { makeLogTree(_) }, returnObj)*/ ))
+            treeCopy.Template(impl, impl.parents, impl.self, impl.body.map { wrapUp(_) }))
+          exitClass()
           exit()
           newTree
 
@@ -247,19 +307,23 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
           enter(tree, tree.symbol)
           val vparamNames = vparamss map { vparams => vparams map {_.rawName} } flatten
           val dataFlow = DataFlow().addFrom(tree.passFuncName).addTo(vparamNames).addPos(tree.pos)
+          val _toDataFlow = if(tree.symbol.isConstructor) {
+            DataFlow().addTo(tree.rawName).addPos(tree.pos).addFrom(superClassesAndMembers)
+          } else {
+            DataFlow().addTo(tree.rawName).addPos(tree.pos)
+          }
           val newTree =
-            if(!name.toString.contains("<init>") && !tree.symbol.isLazy)
+            if(!tree.symbol.isConstructor && !tree.symbol.isLazy)
               treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt,
-                (flattenBlock(wrapUp(rhs, Some(DataFlow().addTo(tree.rawName).addPos(tree.pos)), dataFlow :: Nil))))
+                (flattenBlock(wrapUp(rhs, Some(_toDataFlow), dataFlow :: Nil))))
             else if(tree.symbol.isLazy) {
               lazyBuffer = lazyBuffer ::: List(dataFlow)
               treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt,
-                (flattenBlock(wrapUp(rhs, Some(DataFlow().addTo(tree.rawName).addPos(tree.pos))))))
+                (flattenBlock(wrapUp(rhs, Some(_toDataFlow)))))
             } else {
               constructorBuffer = constructorBuffer ::: List(dataFlow)
-              treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt, (flattenBlock(wrapUp(rhs, Some(DataFlow().addTo(tree.rawName).addPos(tree.pos))))))
+              treeCopy.DefDef(tree, mods, name, tparams, vparamss, tpt, (flattenBlock(wrapUp(rhs, Some(_toDataFlow)))))
             }
-            //else tree
           exit()
           newTree
 
@@ -280,16 +344,16 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
 
         case Apply(fun, args) =>
           val (qualTree, qualNames) = parseFun(fun)
-          val argNames = (args map {_.downName})
+          val argNames = (args map {getNameAsArg(_)})
           val allDeps: List[RawName] = (argNames ::: qualNames)
 
           if(treeInfo.isSelfOrSuperConstrCall(tree)) {
-            constructorBuffer = constructorBuffer ::: dataFlows ::: toDataFlow.map {x => x.addFrom(allDeps)}.toList :::
+            constructorBuffer = constructorBuffer ::: dataFlows ::: toDataFlow.map {x => x.addFrom(tree.downName :: allDeps)}.toList :::
               List(DataFlow().addFrom(allDeps).addTo(tree.passFuncName).addPos(tree.pos))
             wrapWithPrint(treeCopy.Apply(tree, qualTree, args map { wrapUp(_) }), Nil)
           } else {
             wrapWithPrint(treeCopy.Apply(tree, qualTree, args map { wrapUp(_) }),
-              dataFlows ::: toDataFlow.map {x => x.addFrom(allDeps)}.toList :::
+              dataFlows ::: toDataFlow.map {x => x.addFrom(tree.downName :: allDeps)}.toList :::
                 List(DataFlow().addFrom(allDeps).addTo(tree.passFuncName).addPos(tree.pos)))
           }
 
@@ -358,9 +422,7 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
               List(DataFlow().addFrom(tree.downName).addTo(tree.rawName).addPos(tree.pos)) :::
               toDataFlow.map {x => x.addFrom(tree.downName)}.toList)
           else
-            wrapWithPrint(tree, dataFlows :::
-              List(DataFlow().addFrom(tree.upName).addTo(tree.rawName).addPos(tree.pos)) :::
-              toDataFlow.map {x => x.addFrom(tree.upName)}.toList)
+            wrapWithPrint(tree, dataFlows ::: toDataFlow.map {x => x.addFrom(tree.upName)}.toList)
 
         case Literal(value) => wrapWithPrint(tree, dataFlows ::: toDataFlow.map { x => x.addFrom(tree.rawName)}.toList)
 
@@ -373,17 +435,13 @@ trait WrapUpTypingTransformers extends TypingTransformers with FunContexts {
                 toDataFlow.map {x => x.addFrom(tree.downName :: qualNames)}.toList)
           else
             wrapWithPrint(treeCopy.Select(tree, qualTree, selector),
-              dataFlows :::
-                List(DataFlow().addFrom(tree.upName :: qualNames).addTo(tree.rawName).addPos(tree.pos)) :::
-                toDataFlow.map {x => x.addFrom(tree.upName :: qualNames)}.toList)
+              dataFlows ::: toDataFlow.map {x => x.addFrom(tree.upName :: qualNames)}.toList)
 
         case Import(expr, selectors) => tree
 
         case TypeDef(mods, name, tparams, rhs) => tree
 
         case EmptyTree => tree
-
-        case _ => tree
 
        /* case  Template(parents, self, body) =>
           treeCopy.Template(tree, parents, self, body map { wrapUp(_) })

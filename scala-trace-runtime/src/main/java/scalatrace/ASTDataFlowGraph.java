@@ -12,14 +12,16 @@ import java.util.Set;
 public class ASTDataFlowGraph {
 
     private HashMap<String, ASTDataFlowGraphNode> lineMapToNode = new HashMap<>();
-    private HashSet<String> products = new HashSet<>();
     private HashMap<String, Set<ASTDataFlowGraphNode>> nameLastWrittenBy = new HashMap<>();
     private HashMap<String, Set<ASTDataFlowGraphNode>> backpatchMap = new HashMap<>();
+
+
+    private HashSet<String> products = new HashSet<>();
 
     static public int totalLines = 0;
     static public int usefulLines = 0;
     static FileWriter totoalLinesFile, usefulLinesFile, logFile;
-    static public String logFilePrefix = System.getenv("LOGFILENAME");
+    static public String logFilePrefix = "scalatrace-log-" + System.currentTimeMillis();
 
     ASTDataFlowGraph(String[] products) {
         try {
@@ -35,19 +37,27 @@ public class ASTDataFlowGraph {
 
     void log(String[] froms, String[] tos, String[] poses) {
         Set<ASTDataFlowGraphNode> toNodes = new HashSet<>();
+        boolean findTargetLine = false;
         for(String pos : poses) {
-            if(lineMapToNode.containsKey(pos)) {
-                toNodes.add(lineMapToNode.get(pos));
+            String checkTargetLine = "";
+            if(pos.endsWith("$")) {
+                findTargetLine = true;
+                checkTargetLine = pos.substring(0, pos.lastIndexOf("$"));
+            } else {
+                checkTargetLine = pos;
+            }
+            if(lineMapToNode.containsKey(checkTargetLine)) {
+                toNodes.add(lineMapToNode.get(checkTargetLine));
             } else {
                 ++totalLines;
                 try {
-                    totoalLinesFile.write(pos + "\n");
+                    totoalLinesFile.write(checkTargetLine + "\n");
                     totoalLinesFile.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ASTDataFlowGraphNode newNode = new ASTDataFlowGraphNode(pos);
-                lineMapToNode.put(pos, newNode);
+                ASTDataFlowGraphNode newNode = new ASTDataFlowGraphNode(checkTargetLine);
+                lineMapToNode.put(checkTargetLine, newNode);
                 toNodes.add(newNode);
             }
         }
@@ -79,12 +89,9 @@ public class ASTDataFlowGraph {
         }
 
         for(String toName : tos) {
-            Set<ASTDataFlowGraphNode> toNameLastWrittenBy = new HashSet<>();
-            for(ASTDataFlowGraphNode toNode : toNodes) {
-                toNameLastWrittenBy.add(toNode);
-            }
             if(!toName.endsWith("@"))
-                nameLastWrittenBy.put(toName, toNameLastWrittenBy);
+                nameLastWrittenBy.put(toName, toNodes);
+
             if(backpatchMap.containsKey(toName)) {
                 for(ASTDataFlowGraphNode toNode : toNodes) {
                     for(ASTDataFlowGraphNode toBeBackpatched : backpatchMap.get(toName)) {
@@ -93,7 +100,9 @@ public class ASTDataFlowGraph {
                 }
                 backpatchMap.remove(toName);
             }
-            if(products.contains(toName)) {
+
+
+            if(findTargetLine) {
                 System.out.println(toName);
                 for(String pos : poses) {
                     System.out.println(pos);

@@ -17,15 +17,15 @@ public final class ScalaTrace {
         return false;
     }
 
-    public static ICodeDataFlowGraph icodeLogGraph = new ICodeDataFlowGraph(System.getenv("PRODUCTS").split(" "));
+    public static ICodeDataFlowGraph icodeLogGraph = null;//new ICodeDataFlowGraph(System.getenv("PRODUCTS").split(" "));
     public static ASTDataFlowGraph astDataFlowGraph = new ASTDataFlowGraph(System.getenv("PRODUCTS").split(" "));
 
     public static void log(String op, String line) {
         icodeLogGraph.log(op, line);
     }
 
-    static public boolean log(String froms, String tos, String poses)  {
-        astDataFlowGraph.log(froms.split(" "), tos.split(" "), poses.split(" "));
+    static public boolean log(String froms, String to, String poses)  {
+        astDataFlowGraph.log(froms.split(" "), to.split(" "), poses.split(" "));
         return false;
     }
 }

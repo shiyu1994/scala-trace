@@ -43,17 +43,17 @@
         <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ScalaTrace.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+              <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataFlowExceptions.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlowExceptions.scala">
+      <file leaf-file-name="DataFlows.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlows.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="88" selection-start-line="10" selection-start-column="88" selection-end-line="10" selection-end-column="88" />
+              <caret line="53" column="48" selection-start-line="53" selection-start-column="48" selection-end-line="53" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -63,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraph.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="37" column="33" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
+              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -75,7 +75,27 @@
         <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraphNode.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="76" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
+              <caret line="30" column="43" selection-start-line="30" selection-start-column="43" selection-end-line="30" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="String.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/lang/String.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1901" column="18" selection-start-line="1901" selection-start-column="18" selection-end-line="1901" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WrapUpTypingTransformers.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="3.2181818">
+              <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -85,42 +105,7 @@
         <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/FunContexts.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="73" column="24" selection-start-line="73" selection-start-column="24" selection-end-line="73" selection-end-column="24" />
-              <folding>
-                <element signature="e#173#188#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WrapUpTypingTransformers.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.6181818">
-              <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ICodeDataFlowGraphNode.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraphNode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-              <folding>
-                <element signature="e#303#304#0" expanded="true" />
-                <element signature="e#335#336#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ICodeDataFlowGraph.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraph.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="46" column="77" selection-start-line="46" selection-start-column="77" selection-end-line="46" selection-end-column="77" />
+              <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -130,17 +115,98 @@
         <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/ScalaTracePlugin.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="52" selection-start-line="18" selection-start-column="52" selection-end-line="18" selection-end-column="52" />
+              <caret line="36" column="66" selection-start-line="36" selection-start-column="66" selection-end-line="36" selection-end-column="66" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataFlows.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlows.scala">
+      <file leaf-file-name="ProcessEnvironment.java" pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/lang/ProcessEnvironment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+              <caret line="60" column="12" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#15386#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#2597#2598#0" expanded="false" />
+                <element signature="e#2656#2657#0" expanded="false" />
+                <element signature="e#2740#2741#0" expanded="false" />
+                <element signature="e#2789#2790#0" expanded="false" />
+                <element signature="e#4351#4352#0" expanded="false" />
+                <element signature="e#4387#4388#0" expanded="false" />
+                <element signature="e#4423#4424#0" expanded="false" />
+                <element signature="e#4457#4458#0" expanded="false" />
+                <element signature="e#4663#4664#0" expanded="false" />
+                <element signature="e#4715#4716#0" expanded="false" />
+                <element signature="e#4878#4879#0" expanded="false" />
+                <element signature="e#4919#4920#0" expanded="false" />
+                <element signature="e#4982#4983#0" expanded="false" />
+                <element signature="e#5043#5044#0" expanded="false" />
+                <element signature="e#5106#5107#0" expanded="false" />
+                <element signature="e#5170#5171#0" expanded="false" />
+                <element signature="e#5367#5368#0" expanded="false" />
+                <element signature="e#5436#5437#0" expanded="false" />
+                <element signature="e#5487#5488#0" expanded="false" />
+                <element signature="e#5563#5564#0" expanded="false" />
+                <element signature="e#5606#5607#0" expanded="false" />
+                <element signature="e#5677#5678#0" expanded="false" />
+                <element signature="e#5831#5832#0" expanded="false" />
+                <element signature="e#5872#5873#0" expanded="false" />
+                <element signature="e#5932#5933#0" expanded="false" />
+                <element signature="e#5993#5994#0" expanded="false" />
+                <element signature="e#6053#6054#0" expanded="false" />
+                <element signature="e#6114#6115#0" expanded="false" />
+                <element signature="e#6302#6303#0" expanded="false" />
+                <element signature="e#6368#6369#0" expanded="false" />
+                <element signature="e#6413#6414#0" expanded="false" />
+                <element signature="e#6486#6487#0" expanded="false" />
+                <element signature="e#6529#6530#0" expanded="false" />
+                <element signature="e#6597#6598#0" expanded="false" />
+                <element signature="e#6843#6844#0" expanded="false" />
+                <element signature="e#6905#6906#0" expanded="false" />
+                <element signature="e#7184#7185#0" expanded="false" />
+                <element signature="e#7260#7261#0" expanded="false" />
+                <element signature="e#7313#7314#0" expanded="false" />
+                <element signature="e#7390#7391#0" expanded="false" />
+                <element signature="e#7430#7431#0" expanded="false" />
+                <element signature="e#7508#7509#0" expanded="false" />
+                <element signature="e#7730#7731#0" expanded="false" />
+                <element signature="e#7811#7812#0" expanded="false" />
+                <element signature="e#7849#7850#0" expanded="false" />
+                <element signature="e#7908#7909#0" expanded="false" />
+                <element signature="e#7966#7967#0" expanded="false" />
+                <element signature="e#8029#8030#0" expanded="false" />
+                <element signature="e#8074#8075#0" expanded="false" />
+                <element signature="e#8133#8134#0" expanded="false" />
+                <element signature="e#10253#10254#0" expanded="false" />
+                <element signature="e#10330#10331#0" expanded="false" />
+                <element signature="e#11318#11319#0" expanded="false" />
+                <element signature="e#11390#11391#0" expanded="false" />
+                <element signature="e#11722#11723#0" expanded="false" />
+                <element signature="e#11819#11820#0" expanded="false" />
+                <element signature="e#11861#11862#0" expanded="false" />
+                <element signature="e#11957#11958#0" expanded="false" />
+                <element signature="e#12010#12011#0" expanded="false" />
+                <element signature="e#12091#12092#0" expanded="false" />
+                <element signature="e#13232#13233#0" expanded="false" />
+                <element signature="e#13300#13301#0" expanded="false" />
+                <element signature="e#13342#13343#0" expanded="false" />
+                <element signature="e#13408#13409#0" expanded="false" />
+                <element signature="e#14348#14349#0" expanded="false" />
+                <element signature="e#14419#14420#0" expanded="false" />
+                <element signature="e#14461#14462#0" expanded="false" />
+                <element signature="e#14530#14531#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Plugin.scala" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-compiler/srcs/scala-compiler-2.10.4-sources.jar!/scala/tools/nsc/plugins/Plugin.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="28" column="21" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -168,7 +234,6 @@
         <option value="$PROJECT_DIR$/src/main/java/LogTree.java" />
         <option value="$PROJECT_DIR$/src/main/java/LogTreeNode.java" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/Names.scala" />
-        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlowExceptions.scala" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/Name.scala" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlow.scala" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/NameTrees.scala" />
@@ -188,18 +253,22 @@
         <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/Logger.java" />
         <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeLogTree.java" />
         <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeLogTreeNode.java" />
-        <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraph.java" />
         <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraphNode.java" />
         <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTLogTree.java" />
-        <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraphNode.java" />
-        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/ScalaTracePlugin.scala" />
-        <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ScalaTrace.java" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/test/scala/SubComponent.scala" />
-        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlows.scala" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/test/scala/Compiler.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraphNode.java" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/GenICode.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scala/tools/nsc/backend/icode/BasicBlocks.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scala/tools/nsc/backend/icode/GenICode.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraph.java" />
+        <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ScalaTrace.java" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlowExceptions.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlows.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/ScalaTracePlugin.scala" />
+        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala" />
         <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/FunContexts.scala" />
         <option value="$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraph.java" />
-        <option value="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala" />
       </list>
     </option>
   </component>
@@ -244,6 +313,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -396,9 +468,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -408,13 +477,17 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.26006907" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../scala-2.12.0-M3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../InferSpark/gibbs-sampling" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="FullScreen" value="true" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scala/tools/nsc/backend/icode" />
+      <recent name="$PROJECT_DIR$/scala-trace-plugin/src/main/scala" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="scalatrace" />
     </key>
@@ -821,12 +894,18 @@
       <workItem from="1474198469651" duration="10277000" />
       <workItem from="1474263076076" duration="30394000" />
       <workItem from="1474552037656" duration="4632000" />
-      <workItem from="1474597201496" duration="11909000" />
+      <workItem from="1474597201496" duration="17775000" />
+      <workItem from="1474727058978" duration="402000" />
+      <workItem from="1474804330964" duration="6378000" />
+      <workItem from="1474854284056" duration="3504000" />
+      <workItem from="1474946495155" duration="35000" />
+      <workItem from="1475289815318" duration="3139000" />
+      <workItem from="1475403177448" duration="1494000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111109000" />
+    <option name="totallyTimeSpent" value="131927000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -879,41 +958,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.7-sources.jar!/scala/collection/TraversableOnce.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.18181819">
-          <caret line="211" column="91" selection-start-line="211" selection-start-column="91" selection-end-line="211" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.7-sources.jar!/scala/reflect/internal/Trees.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="52" column="8" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.7-sources.jar!/scala/collection/TraversableLike.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="86" column="6" selection-start-line="86" selection-start-column="6" selection-end-line="86" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.7-sources.jar!/scala/reflect/api/Types.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="85" column="17" selection-start-line="85" selection-start-column="17" selection-end-line="85" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.7-sources.jar!/scala/AnyValCompanion.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25454545">
-          <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.7-sources.jar!/scala/Unit.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3272727">
@@ -1054,14 +1098,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.10.4-sources.jar!/scala/reflect/internal/Trees.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="323" column="9" selection-start-line="323" selection-start-column="9" selection-end-line="323" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.4-sources.jar!/scala/collection/IterableView.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2">
@@ -1097,14 +1133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1868" column="18" selection-start-line="1868" selection-start-column="18" selection-end-line="1868" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/io/FileWriter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1117,7 +1145,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="60" column="6" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1125,7 +1152,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="137" column="40" selection-start-line="137" selection-start-column="40" selection-end-line="137" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1140,7 +1166,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2060606">
           <caret line="425" column="28" selection-start-line="425" selection-start-column="28" selection-end-line="425" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1148,7 +1173,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="49" column="70" selection-start-line="49" selection-start-column="70" selection-end-line="49" selection-end-column="70" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1156,11 +1180,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="1216" column="19" selection-start-line="1216" selection-start-column="19" selection-end-line="1216" selection-end-column="19" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#139#160#0" expanded="false" />
-            <element signature="e#1578#1593#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1168,7 +1187,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1176,59 +1194,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.851851">
           <caret line="158" column="17" selection-start-line="158" selection-start-column="9" selection-end-line="158" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/ScalaTracePlugin.scala">
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.10.4-sources.jar!/scala/reflect/internal/Trees.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="52" selection-start-line="18" selection-start-column="52" selection-end-line="18" selection-end-column="52" />
-          <folding />
+          <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-compiler/srcs/scala-compiler-2.10.4-sources.jar!/scala/tools/nsc/backend/icode/Opcodes.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.666201">
+          <caret line="179" column="42" selection-start-line="179" selection-start-column="42" selection-end-line="179" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="77" selection-start-line="46" selection-start-column="77" selection-end-line="46" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="33" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraphNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="76" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraphNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-          <folding>
-            <element signature="e#303#304#0" expanded="true" />
-            <element signature="e#335#336#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ScalaTrace.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -1236,7 +1222,131 @@
     <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlowExceptions.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="88" selection-start-line="10" selection-start-column="88" selection-end-line="10" selection-end-column="88" />
+          <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ICodeDataFlowGraphNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/lang/System.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="937" column="27" selection-start-line="937" selection-start-column="27" selection-end-line="937" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-compiler/jars/scala-compiler-2.11.7.jar!/scala/tools/nsc/plugins/Plugin.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10909091">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/lang/ProcessEnvironment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="60" column="12" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#15386#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2597#2598#0" expanded="false" />
+            <element signature="e#2656#2657#0" expanded="false" />
+            <element signature="e#2740#2741#0" expanded="false" />
+            <element signature="e#2789#2790#0" expanded="false" />
+            <element signature="e#4351#4352#0" expanded="false" />
+            <element signature="e#4387#4388#0" expanded="false" />
+            <element signature="e#4423#4424#0" expanded="false" />
+            <element signature="e#4457#4458#0" expanded="false" />
+            <element signature="e#4663#4664#0" expanded="false" />
+            <element signature="e#4715#4716#0" expanded="false" />
+            <element signature="e#4878#4879#0" expanded="false" />
+            <element signature="e#4919#4920#0" expanded="false" />
+            <element signature="e#4982#4983#0" expanded="false" />
+            <element signature="e#5043#5044#0" expanded="false" />
+            <element signature="e#5106#5107#0" expanded="false" />
+            <element signature="e#5170#5171#0" expanded="false" />
+            <element signature="e#5367#5368#0" expanded="false" />
+            <element signature="e#5436#5437#0" expanded="false" />
+            <element signature="e#5487#5488#0" expanded="false" />
+            <element signature="e#5563#5564#0" expanded="false" />
+            <element signature="e#5606#5607#0" expanded="false" />
+            <element signature="e#5677#5678#0" expanded="false" />
+            <element signature="e#5831#5832#0" expanded="false" />
+            <element signature="e#5872#5873#0" expanded="false" />
+            <element signature="e#5932#5933#0" expanded="false" />
+            <element signature="e#5993#5994#0" expanded="false" />
+            <element signature="e#6053#6054#0" expanded="false" />
+            <element signature="e#6114#6115#0" expanded="false" />
+            <element signature="e#6302#6303#0" expanded="false" />
+            <element signature="e#6368#6369#0" expanded="false" />
+            <element signature="e#6413#6414#0" expanded="false" />
+            <element signature="e#6486#6487#0" expanded="false" />
+            <element signature="e#6529#6530#0" expanded="false" />
+            <element signature="e#6597#6598#0" expanded="false" />
+            <element signature="e#6843#6844#0" expanded="false" />
+            <element signature="e#6905#6906#0" expanded="false" />
+            <element signature="e#7184#7185#0" expanded="false" />
+            <element signature="e#7260#7261#0" expanded="false" />
+            <element signature="e#7313#7314#0" expanded="false" />
+            <element signature="e#7390#7391#0" expanded="false" />
+            <element signature="e#7430#7431#0" expanded="false" />
+            <element signature="e#7508#7509#0" expanded="false" />
+            <element signature="e#7730#7731#0" expanded="false" />
+            <element signature="e#7811#7812#0" expanded="false" />
+            <element signature="e#7849#7850#0" expanded="false" />
+            <element signature="e#7908#7909#0" expanded="false" />
+            <element signature="e#7966#7967#0" expanded="false" />
+            <element signature="e#8029#8030#0" expanded="false" />
+            <element signature="e#8074#8075#0" expanded="false" />
+            <element signature="e#8133#8134#0" expanded="false" />
+            <element signature="e#10253#10254#0" expanded="false" />
+            <element signature="e#10330#10331#0" expanded="false" />
+            <element signature="e#11318#11319#0" expanded="false" />
+            <element signature="e#11390#11391#0" expanded="false" />
+            <element signature="e#11722#11723#0" expanded="false" />
+            <element signature="e#11819#11820#0" expanded="false" />
+            <element signature="e#11861#11862#0" expanded="false" />
+            <element signature="e#11957#11958#0" expanded="false" />
+            <element signature="e#12010#12011#0" expanded="false" />
+            <element signature="e#12091#12092#0" expanded="false" />
+            <element signature="e#13232#13233#0" expanded="false" />
+            <element signature="e#13300#13301#0" expanded="false" />
+            <element signature="e#13342#13343#0" expanded="false" />
+            <element signature="e#13408#13409#0" expanded="false" />
+            <element signature="e#14348#14349#0" expanded="false" />
+            <element signature="e#14419#14420#0" expanded="false" />
+            <element signature="e#14461#14462#0" expanded="false" />
+            <element signature="e#14530#14531#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-compiler/srcs/scala-compiler-2.10.4-sources.jar!/scala/tools/nsc/plugins/Plugin.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="21" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1901" column="18" selection-start-line="1901" selection-start-column="18" selection-end-line="1901" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/ScalaTracePlugin.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="66" selection-start-line="36" selection-start-column="66" selection-end-line="36" selection-end-column="66" />
           <folding />
         </state>
       </provider>
@@ -1244,25 +1354,49 @@
     <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/FunContexts.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="24" selection-start-line="73" selection-start-column="24" selection-end-line="73" selection-end-column="24" />
-          <folding>
-            <element signature="e#173#188#0" expanded="true" />
-          </folding>
+          <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/DataFlows.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <caret line="53" column="48" selection-start-line="53" selection-start-column="48" selection-end-line="53" selection-end-column="48" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ScalaTrace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraphNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="43" selection-start-line="30" selection-start-column="43" selection-end-line="30" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scala-trace-runtime/src/main/java/scalatrace/ASTDataFlowGraph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6181818">
-          <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
+        <state vertical-scroll-proportion="3.2181818">
+          <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
           <folding />
         </state>
       </provider>

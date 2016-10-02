@@ -9,9 +9,11 @@ import java.util.Set;
 /**
  * Created by shiyu on 16/9/19.
  */
+
 public class ASTDataFlowGraphNode {
     String line;
     Set<ASTDataFlowGraphNode> dependOn = new HashSet<>();
+
     boolean useful;
     ASTDataFlowGraphNode(String line) {
         this.line = line;

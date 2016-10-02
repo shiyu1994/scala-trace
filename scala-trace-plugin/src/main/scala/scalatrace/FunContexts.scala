@@ -15,11 +15,14 @@ trait FunContexts extends DataFlows {
   import global._
   import ReadWriteTree._
 
+  var targetLine: String
+
   protected trait FunContext {
     var localTyper: analyzer.Typer
     var contexts: List[(Tree, Symbol)] = Nil
     var lazyBuffer: List[DataFlow] = Nil
     var constructorBuffer: List[DataFlow] = Nil
+    var superClassesAndMembers: List[RawName] = Nil
 
     private def parsePos(pos: Position): String = {
       def leaveOutOffset(pos: Position): String = {
@@ -27,9 +30,10 @@ trait FunContexts extends DataFlows {
         if(stringPos.contains("NoPosition")) "NoPosition"
         else stringPos.substring(stringPos.indexOf("/src/") + 4, stringPos.lastIndexOf(","))
       }
-      /*if(pos.isRange) {
-        "[" + leaveOutOffset(pos.focusStart) + "|" + leaveOutOffset(pos.focusEnd) + "]"
-      } else*/ leaveOutOffset(pos.focus)
+      val standardPos = leaveOutOffset(pos.focus)
+      if(standardPos == targetLine) {
+        standardPos + "$"
+      } else standardPos
     }
 
     protected def makeLogTree(dataFlow: DataFlow): Tree = {
@@ -59,6 +63,14 @@ trait FunContexts extends DataFlows {
 
     protected def exit(): Unit = {
       contexts = contexts.tail
+    }
+
+    protected def enterClass(_superClassesAndMembers: List[RawName] = Nil): Unit = {
+      superClassesAndMembers = _superClassesAndMembers
+    }
+
+    protected def exitClass(): Unit = {
+      superClassesAndMembers = Nil
     }
 
     protected def wrapWithPrint(tree: Tree, dataFlows: List[DataFlow]): Tree = {

@@ -18,7 +18,7 @@ class ScalaTracePlugin(val global: Global) extends Plugin {
       try {
         val nameValue = option.head.split(":")
         nameValue(0) match {
-          case "targetline" => WrapUp.targetLine = nameValue(1)
+          case "targetline" => WrapUp.targetLine = nameValue(1).replace("=", ",")
           case _ => throw new Exception
         }
       } catch {

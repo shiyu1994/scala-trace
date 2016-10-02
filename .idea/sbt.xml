@@ -18,5 +18,6 @@
         <option name="sbtVersion" value="0.13.8" />
       </SbtProjectSettings>
     </option>
+    <option name="vmParameters" value="-XX:MaxPermSize=384M -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005" />
   </component>
 </project>

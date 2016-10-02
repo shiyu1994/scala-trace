@@ -28,7 +28,7 @@ trait FunContexts extends DataFlows {
       def leaveOutOffset(pos: Position): String = {
         val stringPos = pos.toString
         if(stringPos.contains("NoPosition")) "NoPosition"
-        else stringPos.substring(stringPos.indexOf("/src/") + 4, stringPos.lastIndexOf(","))
+        else stringPos.substring(stringPos.indexOf("/src/") + 4, stringPos.lastIndexOf(","))  
       }
       val standardPos = leaveOutOffset(pos.focus)
       if(standardPos == targetLine) {

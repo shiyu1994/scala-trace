@@ -94,8 +94,8 @@
       <file leaf-file-name="WrapUpTypingTransformers.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.2181818">
-              <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.38181818">
+              <caret line="172" column="36" selection-start-line="172" selection-start-column="36" selection-end-line="172" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -900,16 +900,16 @@
       <workItem from="1474854284056" duration="3504000" />
       <workItem from="1474946495155" duration="35000" />
       <workItem from="1475289815318" duration="3139000" />
-      <workItem from="1475403177448" duration="1494000" />
+      <workItem from="1475403177448" duration="1564000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131927000" />
+    <option name="totallyTimeSpent" value="131997000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1395,8 +1395,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scala-trace-plugin/src/main/scala/scalatrace/WrapUpTypingTransformers.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.2181818">
-          <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.38181818">
+          <caret line="172" column="36" selection-start-line="172" selection-start-column="36" selection-end-line="172" selection-end-column="36" />
           <folding />
         </state>
       </provider>
